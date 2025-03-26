@@ -1,0 +1,108 @@
+C51 COMPILER V9.54   MAIN                                                                  03/26/2025 16:07:41 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //点亮一个LED，P2是管理8个LED的寄存器
+   2          //#include <REGX52.H>
+   3          //void main()
+   4          //{
+   5          //  //P2 = 0xFE; //1111 1110
+   6          //  P2 = 0x55;  //0101 0101
+   7          //  while(1)
+   8          //  {
+   9          //    
+  10          //  }
+  11          //}
+  12          
+  13          //LDE闪烁，delay
+  14          //#include <REGX52.H>
+  15          //#include <INTRINS.H>  //_nop_()
+  16          //void Delay500ms()   //@11.0592MHz
+  17          //{
+  18          //  unsigned char i, j, k;
+  19          
+  20          //  _nop_();
+  21          //  i = 4;
+  22          //  j = 129;
+  23          //  k = 119;
+  24          //  do
+  25          //  {
+  26          //    do
+  27          //    {
+  28          //      while (--k);
+  29          //    } while (--j);
+  30          //  } while (--i);
+  31          //}
+  32          //void main()
+  33          //{
+  34          //  while(1)
+  35          //  {
+  36          //    P2 = 0xFE;
+  37          //    Delay500ms();
+  38          //    P2 = 0xFF;
+  39          //    Delay500ms();
+  40          //  }
+  41          //}
+  42          
+  43          //LED流水灯，可变Delay
+  44          #include <REGX52.H>
+  45          #include <INTRINS.H>  //_nop_()
+  46          void Delayxms(unsigned int x)   //@11.0592MHz
+  47          {
+  48   1        unsigned char i, j;
+  49   1        while(x)
+  50   1        {
+  51   2          _nop_();
+  52   2          i = 2;
+  53   2          j = 199;
+  54   2          do
+C51 COMPILER V9.54   MAIN                                                                  03/26/2025 16:07:41 PAGE 2   
+
+  55   2          {
+  56   3            while (--j);
+  57   3          } while (--i);
+  58   2          x--;
+  59   2        } 
+  60   1      }
+  61          void main()
+  62          {
+  63   1        while(1)
+  64   1        {
+  65   2          P2 = 0xFE;
+  66   2          Delayxms(500);
+  67   2          P2 = 0xFD;
+  68   2          Delayxms(1000);
+  69   2          P2 = 0xFB;
+  70   2          Delayxms(100);
+  71   2          P2 = 0xF7;
+  72   2          Delayxms(200);
+  73   2          P2 = 0xEF;
+  74   2          Delayxms(300);
+  75   2          P2 = 0xDF;
+  76   2          Delayxms(700);
+  77   2          P2 = 0xBF;
+  78   2          Delayxms(800);
+  79   2          P2 = 0x7F;
+  80   2          Delayxms(400);
+  81   2        }
+  82   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    103    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
