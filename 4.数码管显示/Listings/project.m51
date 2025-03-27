@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        03/26/2025  20:30:07  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        03/27/2025  15:18:34  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -28,9 +28,10 @@ LINK MAP OF MODULE:  .\Objects\project (MAIN)
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
             CODE    0003H     008CH     UNIT         ?C_C51STARTUP
-            CODE    008FH     0063H     UNIT         ?PR?_NIXIETUBE?MAIN
-            CODE    00F2H     0014H     UNIT         ?C_INITSEG
-            CODE    0106H     000BH     UNIT         ?PR?MAIN?MAIN
+            CODE    008FH     006DH     UNIT         ?PR?_NIXIETUBE?MAIN
+            CODE    00FCH     0026H     UNIT         ?PR?MAIN?MAIN
+            CODE    0122H     0015H     UNIT         ?PR?_DELAYXMS?MAIN
+            CODE    0137H     0014H     UNIT         ?C_INITSEG
 
 
 
@@ -47,6 +48,9 @@ SEGMENT
 ?PR?MAIN?MAIN
   +--> ?PR?_NIXIETUBE?MAIN
 
+?PR?_NIXIETUBE?MAIN
+  +--> ?PR?_DELAYXMS?MAIN
+
 
 
 SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
@@ -55,53 +59,82 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   ----------------------------------
 
   -------         MODULE        MAIN
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/27/2025  15:18:34  PAGE 2
+
+
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
   D:0008H         PUBLIC        NixieTubeNumber
   C:008FH         PUBLIC        _NixieTube
-BL51 BANKED LINKER/LOCATER V6.22                                                      03/26/2025  20:30:07  PAGE 2
-
-
   B:00A0H.2       PUBLIC        P2_2
   B:00A0H.3       PUBLIC        P2_3
   B:00A0H.4       PUBLIC        P2_4
-  C:0106H         PUBLIC        main
+  C:00FCH         PUBLIC        main
+  C:0122H         PUBLIC        _Delayxms
+  -------         PROC          _DELAYXMS
+  D:0006H         SYMBOL        x
+  -------         DO            
+  D:0005H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0122H         LINE#         48
+  C:0122H         LINE#         49
+  C:0122H         LINE#         51
+  C:0126H         LINE#         52
+  C:0126H         LINE#         53
+  C:0127H         LINE#         54
+  C:0129H         LINE#         55
+  C:012BH         LINE#         57
+  C:012BH         LINE#         58
+  C:012DH         LINE#         59
+  C:012FH         LINE#         60
+  C:0134H         LINE#         61
+  C:0136H         LINE#         62
+  -------         ENDPROC       _DELAYXMS
   -------         PROC          _NIXIETUBE
   D:0007H         SYMBOL        Location
   D:0004H         SYMBOL        Number
-  C:008FH         LINE#         5
-  C:008FH         LINE#         6
-  C:008FH         LINE#         7
-  C:00BCH         LINE#         8
-  C:00BCH         LINE#         9
-  C:00BCH         LINE#         10
-  C:00C0H         LINE#         11
-  C:00C0H         LINE#         12
-  C:00C4H         LINE#         13
-  C:00C4H         LINE#         14
-  C:00C8H         LINE#         15
-  C:00C8H         LINE#         16
-  C:00CCH         LINE#         17
-  C:00CCH         LINE#         18
-  C:00D4H         LINE#         19
-  C:00D4H         LINE#         20
-  C:00DCH         LINE#         21
-  C:00DCH         LINE#         22
-  C:00E4H         LINE#         23
-  C:00E4H         LINE#         24
-  C:00EAH         LINE#         25
-  C:00EAH         LINE#         26
-  C:00F1H         LINE#         27
+  C:008FH         LINE#         64
+  C:008FH         LINE#         65
+  C:008FH         LINE#         66
+  C:00BCH         LINE#         67
+  C:00BCH         LINE#         68
+  C:00BCH         LINE#         69
+  C:00C0H         LINE#         70
+  C:00C0H         LINE#         71
+  C:00C4H         LINE#         72
+  C:00C4H         LINE#         73
+  C:00C8H         LINE#         74
+  C:00C8H         LINE#         75
+  C:00CCH         LINE#         76
+  C:00CCH         LINE#         77
+  C:00D4H         LINE#         78
+  C:00D4H         LINE#         79
+  C:00DCH         LINE#         80
+  C:00DCH         LINE#         81
+  C:00E4H         LINE#         82
+  C:00E4H         LINE#         83
+  C:00EAH         LINE#         84
+  C:00EAH         LINE#         85
+  C:00F1H         LINE#         86
+  C:00F8H         LINE#         87
+  C:00FBH         LINE#         88
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/27/2025  15:18:34  PAGE 3
+
+
   -------         ENDPROC       _NIXIETUBE
   -------         PROC          MAIN
-  C:0106H         LINE#         29
-  C:0106H         LINE#         30
-  C:0106H         LINE#         37
-  C:010FH         LINE#         38
-  C:010FH         LINE#         39
-  C:010FH         LINE#         41
+  C:00FCH         LINE#         90
+  C:00FCH         LINE#         91
+  C:00FCH         LINE#         92
+  C:00FCH         LINE#         93
+  C:00FCH         LINE#         94
+  C:0105H         LINE#         95
+  C:010EH         LINE#         96
+  C:0117H         LINE#         97
+  C:0120H         LINE#         98
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
-Program Size: data=26.0 xdata=0 code=273
+Program Size: data=26.0 xdata=0 code=331
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
