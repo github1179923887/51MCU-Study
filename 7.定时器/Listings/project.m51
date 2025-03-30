@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    03/30/2025  19:44:27  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    03/30/2025  21:21:13  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -59,7 +59,7 @@ LINK MAP OF MODULE:  .\Objects\project (MAIN)
             CODE    032BH     0010H     UNIT         ?PR?LCD_DELAY?LCD1602
             CODE    033BH     000EH     UNIT         ?CO?MAIN
             CODE    0349H     000CH     UNIT         ?C_C51STARTUP
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 2
 
 
             CODE    0355H     000AH     UNIT         ?PR?_LCD_WRITECOMMAND?LCD1602
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   D:001AH         PUBLIC        Sec
   D:001BH         PUBLIC        Hour
   D:001CH         PUBLIC        Min
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 3
 
 
   C:0103H         PUBLIC        main
@@ -151,22 +151,22 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:016DH         LINE#         81
   C:016DH         LINE#         82
   C:0173H         LINE#         83
-  C:0175H         LINE#         84
-  C:017BH         LINE#         85
+  C:0175H         LINE#         85
   C:017BH         LINE#         86
-  C:017EH         LINE#         87
-  C:0180H         LINE#         88
-  C:0186H         LINE#         89
+  C:017BH         LINE#         87
+  C:017EH         LINE#         88
+  C:0180H         LINE#         89
   C:0186H         LINE#         90
-  C:0189H         LINE#         91
-  C:018BH         LINE#         92
-  C:0191H         LINE#         93
+  C:0186H         LINE#         91
+  C:0189H         LINE#         92
+  C:018BH         LINE#         93
   C:0191H         LINE#         94
-  C:0194H         LINE#         95
+  C:0191H         LINE#         95
   C:0194H         LINE#         96
   C:0194H         LINE#         97
   C:0194H         LINE#         98
-  C:0194H         LINE#         100
+  C:0194H         LINE#         99
+  C:0194H         LINE#         101
   -------         ENDPROC       TIMER0_ROUTINE
   -------         ENDMOD        MAIN
 
@@ -179,7 +179,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:02D5H         PUBLIC        Timer0Init
   D:008CH         PUBLIC        TH0
   D:008AH         PUBLIC        TL0
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 4
 
 
   B:00B8H.1       PUBLIC        PT0
@@ -239,7 +239,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:0306H         LINE#         7
   C:0307H         LINE#         8
   C:0309H         LINE#         9
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 5
 
 
   C:030BH         LINE#         11
@@ -299,7 +299,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:035AH         LINE#         39
   C:035CH         LINE#         40
   -------         ENDPROC       _LCD_WRITECOMMAND
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 6
 
 
   -------         PROC          L?0047
@@ -359,7 +359,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:027DH         LINE#         111
   C:027DH         LINE#         113
   C:0280H         LINE#         114
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 7
 
 
   C:0293H         LINE#         115
@@ -419,7 +419,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:0199H         LINE#         164
   C:019CH         LINE#         165
   C:01A4H         LINE#         166
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 8
 
 
   C:01A4H         LINE#         167
@@ -479,7 +479,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   -------         ENDPROC       _LCD_SHOWBINNUM
   -------         ENDMOD        LCD1602
 
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  19:44:27  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/30/2025  21:21:13  PAGE 9
 
 
   -------         MODULE        ?C?CLDOPTR

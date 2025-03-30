@@ -81,6 +81,7 @@ void Timer0_Routine() interrupt 1
 	{
 		T0Count = 0;
 		Sec++;
+		//Sec = Sec + 1.04;	//¾ÀÕýÎó²î£¬ËÆºõÃ»ÓÃ
 		if(Sec >= 60)
 		{
 			Sec = 0;
