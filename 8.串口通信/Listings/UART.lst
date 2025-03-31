@@ -1,0 +1,81 @@
+C51 COMPILER V9.54   UART                                                                  03/31/2025 14:20:20 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\UART.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE UART.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\UART
+                    -.lst) OBJECT(.\Objects\UART.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          /**
+   4                  *  @breif       4800bps@11.0592MHz串口初始化
+   5                  *  @param       无
+   6                  *  @retval      无
+   7                  */
+   8          void UART_Init()        //4800bps@11.0592MHz
+   9          {
+  10   1              //配置串口相关寄存器
+  11   1              SCON = 0x50;    //0100 0000 分别指SM0,SM1,SM2,REN,TB8,RB8,TI,RI，具体功能见手册P235，1：0x40未打开接收，2：0
+             -x50打开接收（即REN置1）
+  12   1              PCON |= 0x80;
+  13   1              
+  14   1              //配置定时器1
+  15   1              TMOD &= 0x0F;           //设置定时器模式，模式2：八位自动重装模式
+  16   1              TMOD |= 0x20;           //设置定时器模式
+  17   1              TL1 = 0xF4;             //设定定时初值
+  18   1              TH1 = 0xF4;             //设定定时器重装值
+  19   1              ET1 = 0;                //禁止定时器1中断
+  20   1              TR1 = 1;                //启动定时器1
+  21   1              
+  22   1              //配置中断，需要接收时，优先级取默认
+  23   1              ES = 1;
+  24   1              EA = 1;
+  25   1      }
+  26          /**
+  27                  *  @breif       串口发送一个字节数据
+  28                  *  @param       Byte 要发送的数据
+  29                  *  @retval      无
+  30                  */
+  31          void UART_SendByte(unsigned char Byte)
+  32          {
+  33   1              SBUF = Byte;    //串口数据缓存寄存器
+  34   1              while(TI == 0); //检测到TI==1(即数据发送完成)时跳出循环，将TI置0
+  35   1              TI = 0;
+  36   1      }
+  37          /**
+  38                  *  @breif       串口中断函数模板
+  39                  *  @param       无
+  40                  *  @retval      无
+  41                  */
+  42          /*
+  43          void UART_Routine() interrupt 4 //串口中断号
+  44          {
+  45                  if(RI == 1)     //数据接收完成，作判断的原因是发送和接收公用一个中断口，需要区分
+  46                  {
+  47                          
+  48                          RI = 0;
+  49                  }
+  50          }
+  51          */
+  52          
+  53          
+C51 COMPILER V9.54   UART                                                                  03/31/2025 14:20:20 PAGE 2   
+
+  54          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     35    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
