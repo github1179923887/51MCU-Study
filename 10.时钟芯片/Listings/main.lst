@@ -1,0 +1,198 @@
+C51 COMPILER V9.54   MAIN                                                                  04/01/2025 18:13:38 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //读写DS1302并实现可调时钟
+   2          #include <REGX52.H>
+   3          #include "LCD1602.h"
+   4          #include "DS1302.h"
+   5          #include "IndependentKey.h"
+   6          #include "Timer0.h"
+   7          
+   8          unsigned char KeyNum,MODE,TimeSetSelect,TimeSetFlag;
+   9          
+  10          void TimeShow()
+  11          {
+  12   1              DS1302_ReadTime();
+  13   1              LCD_ShowNum(1,1,DS1302_Time[0],2);
+  14   1              LCD_ShowNum(1,4,DS1302_Time[1],2);
+  15   1              LCD_ShowNum(1,7,DS1302_Time[2],2);
+  16   1              LCD_ShowNum(2,1,DS1302_Time[3],2);
+  17   1              LCD_ShowNum(2,4,DS1302_Time[4],2);
+  18   1              LCD_ShowNum(2,7,DS1302_Time[5],2);
+  19   1      }
+  20          
+  21          void TimeSet()
+  22          {
+  23   1              unsigned char i = 0;
+  24   1              if(KeyNum == 2)
+  25   1              {
+  26   2                      TimeSetSelect++;
+  27   2                      TimeSetSelect %= 6;
+  28   2              }
+  29   1              
+  30   1              if(KeyNum == 3)
+  31   1              {
+  32   2                      DS1302_Time[TimeSetSelect]++;
+  33   2                      //年
+  34   2                      if(DS1302_Time[0] > 99){DS1302_Time[0] = 0;}
+  35   2                      //月
+  36   2                      if(DS1302_Time[1] > 12){DS1302_Time[1] = 1;}
+  37   2                      //日
+  38   2                      if(DS1302_Time[1] == 1 || DS1302_Time[1] == 3 || DS1302_Time[1] == 5 || DS1302_Time[1] == 7
+  39   2                      || DS1302_Time[1] == 8 || DS1302_Time[1] == 10|| DS1302_Time[1] == 12)
+  40   2                      {
+  41   3                              if(DS1302_Time[2] > 31){DS1302_Time[2] = 1;}
+  42   3                      }
+  43   2                      else if(DS1302_Time[1] == 4 || DS1302_Time[1] == 6 || DS1302_Time[1] == 9 || DS1302_Time[1] == 11)
+  44   2                      {
+  45   3                              if(DS1302_Time[2] > 30){DS1302_Time[2] = 1;}
+  46   3                      }
+  47   2                      else if(DS1302_Time[1] == 2)
+  48   2                      {
+  49   3                              if(DS1302_Time[0] % 4 ==0)
+  50   3                              {
+  51   4                                      if(DS1302_Time[2] > 29){DS1302_Time[2] = 1;}
+  52   4                              }
+  53   3                              else
+  54   3                              {
+C51 COMPILER V9.54   MAIN                                                                  04/01/2025 18:13:38 PAGE 2   
+
+  55   4                                      if(DS1302_Time[2] > 28){DS1302_Time[2] = 1;}
+  56   4                              }
+  57   3                      }
+  58   2                      //时分秒
+  59   2                      if(DS1302_Time[3] > 23){DS1302_Time[3] = 0;}
+  60   2                      if(DS1302_Time[4] > 59){DS1302_Time[4] = 0;}
+  61   2                      if(DS1302_Time[5] > 59){DS1302_Time[5] = 0;}
+  62   2              }
+  63   1              if(KeyNum == 4)
+  64   1              {
+  65   2                      DS1302_Time[TimeSetSelect]--;
+  66   2                      //年
+  67   2                      if(DS1302_Time[0] < 0){DS1302_Time[0] = 99;}
+  68   2                      //月
+  69   2                      if(DS1302_Time[1] < 1){DS1302_Time[1] = 12;}
+  70   2                      //日
+  71   2                      if(DS1302_Time[1] == 1 || DS1302_Time[1] == 3 || DS1302_Time[1] == 5 || DS1302_Time[1] == 7
+  72   2                      || DS1302_Time[1] == 8 || DS1302_Time[1] == 10|| DS1302_Time[1] == 12)
+  73   2                      {
+  74   3                              if(DS1302_Time[2] < 1){DS1302_Time[2] = 31;}
+  75   3                              if(DS1302_Time[2] > 31){DS1302_Time[2] = 1;}
+  76   3                      }
+  77   2                      else if(DS1302_Time[1] == 4 || DS1302_Time[1] == 6 || DS1302_Time[1] == 9 || DS1302_Time[1] == 11)
+  78   2                      {
+  79   3                              if(DS1302_Time[2] < 1){DS1302_Time[2] = 30;}
+  80   3                              if(DS1302_Time[2] > 30){DS1302_Time[2] = 1;}
+  81   3                      }
+  82   2                      else if(DS1302_Time[1] == 2)
+  83   2                      {
+  84   3                              if(DS1302_Time[0] % 4 ==0)
+  85   3                              {
+  86   4                                      if(DS1302_Time[2] < 1){DS1302_Time[2] = 29;}
+  87   4                                      if(DS1302_Time[2] > 29){DS1302_Time[2] = 1;}
+  88   4                              }
+  89   3                              else
+  90   3                              {
+  91   4                                      if(DS1302_Time[2] < 1){DS1302_Time[2] = 28;}
+  92   4                                      if(DS1302_Time[2] > 28){DS1302_Time[2] = 1;}
+  93   4                              }
+  94   3                      }
+  95   2                      //时分秒
+  96   2                      if(DS1302_Time[3] < 0){DS1302_Time[3] = 23;}
+  97   2                      if(DS1302_Time[4] < 0){DS1302_Time[4] = 59;}
+  98   2                      if(DS1302_Time[5] < 0){DS1302_Time[5] = 59;}
+  99   2              }
+ 100   1              //闪烁设置
+ 101   1              for(i = 0;i < 6;i++)
+ 102   1              {
+ 103   2                      if(i <=2 )
+ 104   2                      {
+ 105   3                              if(TimeSetSelect == i && TimeSetFlag == 1)
+ 106   3                              {
+ 107   4                                      LCD_ShowString(1,1 + 3*i,"  ");
+ 108   4                              }
+ 109   3                              else
+ 110   3                              {
+ 111   4                                      LCD_ShowNum(1,1 + 3*i,DS1302_Time[i],2);
+ 112   4                              }
+ 113   3                      }
+ 114   2                      else
+ 115   2                      {
+ 116   3                              if(TimeSetSelect == i && TimeSetFlag == 1)
+C51 COMPILER V9.54   MAIN                                                                  04/01/2025 18:13:38 PAGE 3   
+
+ 117   3                              {
+ 118   4                                      LCD_ShowString(2,1 + 3*(i-3),"  ");
+ 119   4                              }
+ 120   3                              else
+ 121   3                              {
+ 122   4                                      LCD_ShowNum(2,1 + 3*(i-3),DS1302_Time[i],2);
+ 123   4                              }
+ 124   3                      }       
+ 125   2              }
+ 126   1      }
+ 127          
+ 128          void main()
+ 129          {
+ 130   1              LCD_Init();
+ 131   1              DS1302_Init();
+ 132   1              Timer0Init();
+ 133   1              //DS1302_WriteByte(0x80,0x55);  //0x81：写入秒数存储地址
+ 134   1              DS1302_SetTime();
+ 135   1              LCD_ShowString(1,1,"  -  -  ");
+ 136   1              LCD_ShowString(2,1,"  :  :  ");
+ 137   1              
+ 138   1              while(1)
+ 139   1              {
+ 140   2                      //Sec = DS1302_ReadByte(0x81);  //0x81：读取秒数存储地址
+ 141   2                      //Min = DS1302_ReadByte(0x83);  //0x83：读取分钟存储地址
+ 142   2                      KeyNum = IndependentKey();
+ 143   2                      if(KeyNum == 1)
+ 144   2                      {
+ 145   3                              if(MODE == 0){MODE = 1;TimeSetSelect = 0;}
+ 146   3                              else if(MODE == 1){MODE = 0;DS1302_SetTime();}
+ 147   3                      }
+ 148   2                      //模式设置
+ 149   2                      switch (MODE)
+ 150   2                      {
+ 151   3                              case 0:TimeShow();break;
+ 152   3                              case 1:TimeSet();break;
+ 153   3                      }
+ 154   2              }
+ 155   1      }
+ 156          
+ 157          void Timer0Routine() interrupt 1
+ 158          {
+ 159   1              static unsigned int T0Count;
+ 160   1              TL0=0x18;//设置定时初值
+ 161   1              TH0 =0xFC;//设置定时初值
+ 162   1              T0Count++;
+ 163   1              if(T0Count >= 500)      //每过500ms
+ 164   1              {
+ 165   2                      T0Count=0;
+ 166   2                      TimeSetFlag =!TimeSetFlag;      //反复去0,1
+ 167   2              }
+ 168   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    859    ----
+   CONSTANT SIZE    =     21    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.54   MAIN                                                                  04/01/2025 18:13:38 PAGE 4   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
