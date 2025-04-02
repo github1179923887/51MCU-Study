@@ -1,0 +1,108 @@
+C51 COMPILER V9.54   MAIN                                                                  04/02/2025 21:11:10 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //利用定时器完成延时的秒表，避免CPU占用
+   2          #include <REGX52.H>
+   3          #include "Delay.h"
+   4          #include "IndependentKey.h"
+   5          #include "Timer0.h"
+   6          #include "NixieTube.h"
+   7          
+   8          unsigned char KeyNum,Min,Sec,MiniSec,RunFlag;
+   9          
+  10          void main()
+  11          {
+  12   1              Timer0_Init();
+  13   1              while(1)
+  14   1              {
+  15   2                      KeyNum = Key();
+  16   2                      if(KeyNum == 1)
+  17   2                      {
+  18   3                              RunFlag = !RunFlag;
+  19   3                      }
+  20   2                      if(KeyNum == 2)
+  21   2                      {
+  22   3                              RunFlag = 0;
+  23   3                              Min = Sec = MiniSec = 0;
+  24   3                      }
+  25   2                      NixieTube_SetBuf(1,Min/10);
+  26   2                      NixieTube_SetBuf(2,Min%10);
+  27   2                      NixieTube_SetBuf(3,11);
+  28   2                      NixieTube_SetBuf(4,Sec/10);
+  29   2                      NixieTube_SetBuf(5,Sec%10);
+  30   2                      NixieTube_SetBuf(6,11);
+  31   2                      NixieTube_SetBuf(7,MiniSec/10);
+  32   2                      NixieTube_SetBuf(8,MiniSec%10);
+  33   2              }
+  34   1      }
+  35          
+  36          void Sec_Loop()
+  37          {
+  38   1              if(RunFlag)
+  39   1              {
+  40   2                      MiniSec++;
+  41   2                      if(MiniSec >= 100)
+  42   2                      {
+  43   3                              MiniSec = 0;
+  44   3                              Sec++;
+  45   3                              if(Sec >= 60)
+  46   3                              {
+  47   4                                      Sec = 0;
+  48   4                                      Min++;
+  49   4                                      if(Min >= 60)
+  50   4                                      {
+  51   5                                              Min = 0;
+  52   5                                      }
+  53   4                              }
+  54   3                      }
+C51 COMPILER V9.54   MAIN                                                                  04/02/2025 21:11:10 PAGE 2   
+
+  55   2              }
+  56   1              
+  57   1      }
+  58          
+  59          void Timer0_Routine() interrupt 1       //注意不能嵌套耗时的函数
+  60          {
+  61   1              static unsigned int T0Count1,T0Count2,T0Count3;
+  62   1              TL0 = 0x18;//设置定时初值
+  63   1              TH0 = 0xFC;//设置定时初值
+  64   1              T0Count1++;
+  65   1              if(T0Count1 >= 20)      //每过20ms，过滤掉按键电平抖动
+  66   1              {
+  67   2                      T0Count1=0;
+  68   2                      Key_Loop();
+  69   2              }
+  70   1              T0Count2++;
+  71   1              if(T0Count2 >= 2)       //每过2ms，大了数码管会闪烁
+  72   1              {
+  73   2                      T0Count2=0;
+  74   2                      NixieTube_Loop();
+  75   2              }
+  76   1              T0Count3++;
+  77   1              if(T0Count3 >= 10)      //每过10ms，MiniSec+1
+  78   1              {
+  79   2                      T0Count3=0;
+  80   2                      Sec_Loop();
+  81   2              }
+  82   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    329    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
