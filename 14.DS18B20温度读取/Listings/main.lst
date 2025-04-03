@@ -1,0 +1,172 @@
+C51 COMPILER V9.54   MAIN                                                                  04/03/2025 15:12:22 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //DS18B20ÎÂ¶È¶ÁÈ¡
+   2          //#include <REGX52.H>
+   3          //#include "LCD1602.h"
+   4          //#include "DS18B20.h"
+   5          //#include "Delay.h"
+   6          
+   7          //float T;
+   8          
+   9          //void main()
+  10          //{
+  11          //      LCD_Init();
+  12          //      LCD_ShowString(1,1,"Temperature:");
+  13          //      
+  14          //      DS18B20_ConverT();
+  15          //      Delayxms(1000);
+  16          //      
+  17          //      while(1)
+  18          //      {
+  19          //              DS18B20_ConverT();      //ÈôÁ¢¿Ì¶ÁÈ¡ÎÂ¶È£¬¿ÉÄÜÎÂ¶È»¹Ã»×ª»¯Íêµ¼ÖÂ¶ÁÈ¡µ½Ä¬ÈÏÖµ£¬ÔÚ³ÌÐò¿ªÊ¼Ê±ÏÈ×ª»¯Ò»´ÎÈ»ºóÑÓÊ
+             -±1s¼´¿É
+  20          //              T = DS18B20_ReadT();
+  21          //              if(T < 0)
+  22          //              {
+  23          //                      LCD_ShowChar(2,1,'-');
+  24          //                      T = -T;
+  25          //              }
+  26          //              else
+  27          //              {
+  28          //                      LCD_ShowChar(2,1,'+');
+  29          //              }
+  30          //              LCD_ShowNum(2,2,T,3);   //¾«¶È¶ªÊ§£¬ÏÔÊ¾ÕûÊýÎ»
+  31          //              LCD_ShowChar(2,5,'.');
+  32          //              LCD_ShowNum(2,6,(unsigned long)(T*10000)%10000,4);      //ÏÔÊ¾Ð¡ÊýÎ»
+  33          //      }
+  34          //}
+  35          
+  36          //DS18B20ÎÂ¶È±¨¾¯Æ÷
+  37          #include <REGX52.H>
+  38          #include "LCD1602.h"
+  39          #include "DS18B20.h"
+  40          #include "Delay.h"
+  41          #include "AT24C02.h"
+  42          #include "IndependentKey.h"
+  43          #include "Timer0.h"
+  44          
+  45          float T,TShow;
+  46          char TLow,THigh;
+  47          unsigned char KeyNum;
+  48          
+  49          void main()
+  50          {
+  51   1              THigh = AT24C02_ReadByte(0);
+  52   1              TLow = AT24C02_ReadByte(1);
+  53   1              if(THigh>125 || TLow<-55 || THigh<=TLow)        //²»ÖªµÀÉÏÒ»´Î´æ´¢µÄÖµÊÇ·ñ·ûºÏÎÂ¶ÈÉÏÏÂÏÞ£¬ËùÒÔÅÐ¶ÏÒ»ÏÂÉèÖÃÄ¬ÈÏÖµ
+C51 COMPILER V9.54   MAIN                                                                  04/03/2025 15:12:22 PAGE 2   
+
+  54   1              {
+  55   2                      THigh = 20;
+  56   2                      TLow = 15;
+  57   2              }
+  58   1              LCD_Init();
+  59   1              Timer0_Init();
+  60   1              LCD_ShowString(1,1,"T:");
+  61   1              LCD_ShowString(2,1,"TH:");
+  62   1              LCD_ShowString(2,9,"TL:");
+  63   1              LCD_ShowSignedNum(2,4,THigh,3);
+  64   1              LCD_ShowSignedNum(2,12,TLow,3); 
+  65   1              
+  66   1              DS18B20_ConverT();
+  67   1              Delayxms(500);
+  68   1              
+  69   1              while(1)
+  70   1              {
+  71   2                      KeyNum = Key();
+  72   2                      
+  73   2                      DS18B20_ConverT();      //ÈôÁ¢¿Ì¶ÁÈ¡ÎÂ¶È£¬¿ÉÄÜÎÂ¶È»¹Ã»×ª»¯Íêµ¼ÖÂ¶ÁÈ¡µ½Ä¬ÈÏÖµ£¬ÔÚ³ÌÐò¿ªÊ¼Ê±ÏÈ×ª»¯Ò»´ÎÈ»ºóÑÓÊ±1
+             -s¼´¿É
+  74   2                      T = DS18B20_ReadT();
+  75   2                      if(T < 0)
+  76   2                      {
+  77   3                              LCD_ShowChar(1,3,'-');
+  78   3                              TShow = -T;
+  79   3                      }
+  80   2                      else
+  81   2                      {
+  82   3                              LCD_ShowChar(1,3,'+');
+  83   3                              TShow = T;
+  84   3                      }
+  85   2                      LCD_ShowNum(1,4,TShow,3);       //¾«¶È¶ªÊ§£¬ÏÔÊ¾ÕûÊýÎ»
+  86   2                      LCD_ShowChar(1,7,'.');
+  87   2                      LCD_ShowNum(1,8,(unsigned long)(TShow*100)%100,2);      //ÏÔÊ¾Ð¡ÊýÎ»
+  88   2                      
+  89   2                      if(KeyNum)      //°´¼ü°´ÏÂÊ±²ÅË¢ÐÂ£¬½ÚÊ¡×ÊÔ´
+  90   2                      {
+  91   3                              if(KeyNum == 1 && THigh <= 125)
+  92   3                              {
+  93   4                                      THigh++;
+  94   4                              }
+  95   3                              if(KeyNum == 2)
+  96   3                              {
+  97   4                                      THigh--;
+  98   4                                      if(THigh <= TLow){THigh++;}
+  99   4                              }
+ 100   3                              if(KeyNum == 3)
+ 101   3                              {
+ 102   4                                      TLow++;
+ 103   4                                      if(TLow >= THigh){TLow--;}
+ 104   4                              }
+ 105   3                              if(KeyNum == 4 && TLow >= -55)
+ 106   3                              {
+ 107   4                                      TLow--;
+ 108   4                              }
+ 109   3                              LCD_ShowSignedNum(2,4,THigh,3);
+ 110   3                              LCD_ShowSignedNum(2,12,TLow,3); 
+ 111   3                              AT24C02_WriteByte(0,THigh);
+ 112   3                              Delayxms(5);
+ 113   3                              AT24C02_WriteByte(1,TLow);
+ 114   3                              Delayxms(5);
+C51 COMPILER V9.54   MAIN                                                                  04/03/2025 15:12:22 PAGE 3   
+
+ 115   3                      }
+ 116   2                      if(T > THigh)
+ 117   2                      {
+ 118   3                              LCD_ShowString(1,13,"OV:H");
+ 119   3                      }
+ 120   2                      else if(T < TLow)
+ 121   2                      {
+ 122   3                              LCD_ShowString(1,13,"OV:L");
+ 123   3                      }
+ 124   2                      else
+ 125   2                      {
+ 126   3                              LCD_ShowString(1,13,"    ");
+ 127   3                      }
+ 128   2              }
+ 129   1      }
+ 130          //µ÷ÓÃÊ±»á´ò¶ÏÖ÷º¯Êý£¬ÈôÖ÷º¯ÊýÕýÔÚÑÓÊ±£¬»áµ¼ÖÂÉÁË¸
+ 131          void Timer0_Routine() interrupt 1       //×¢Òâ²»ÄÜÇ¶Ì×ºÄÊ±µÄº¯Êý
+ 132          {
+ 133   1              static unsigned int T0Count1;
+ 134   1              TL0 = 0x18;//ÉèÖÃ¶¨Ê±³õÖµ
+ 135   1              TH0 = 0xFC;//ÉèÖÃ¶¨Ê±³õÖµ
+ 136   1              T0Count1++;
+ 137   1              if(T0Count1 >= 20)      //Ã¿¹ý20ms£¬¹ýÂËµô°´¼üµçÆ½¶¶¶¯
+ 138   1              {
+ 139   2                      T0Count1=0;
+ 140   2                      Key_Loop();
+ 141   2              }
+ 142   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    623    ----
+   CONSTANT SIZE    =     26    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     13    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
