@@ -1,6 +1,8 @@
 ".\Objects\main.obj",
 ".\Objects\Delay.obj",
-".\Objects\Timer0.obj" 
+".\Objects\Timer0.obj",
+".\Objects\IndependentKey.obj",
+".\Objects\NixieTube.obj" 
 TO ".\Objects\project" 
 PRINT(".\Listings\project.m51") RAMSIZE(256) 
 DISABLEWARNING (16) 

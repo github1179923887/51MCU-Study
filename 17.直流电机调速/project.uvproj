@@ -388,6 +388,26 @@
               <FileType>5</FileType>
               <FilePath>.\Timer0.h</FilePath>
             </File>
+            <File>
+              <FileName>IndependentKey.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\IndependentKey.h</FilePath>
+            </File>
+            <File>
+              <FileName>IndependentKey.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\IndependentKey.c</FilePath>
+            </File>
+            <File>
+              <FileName>NixieTube.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\NixieTube.h</FilePath>
+            </File>
+            <File>
+              <FileName>NixieTube.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\NixieTube.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

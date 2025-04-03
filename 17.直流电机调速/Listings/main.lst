@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   MAIN                                                                  04/03/2025 19:08:15 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  04/03/2025 19:49:26 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
@@ -8,53 +8,76 @@ COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE 
 
 line level    source
 
-   1          //电机控制LED呼吸灯
+   1          //直流电机调速
    2          #include <REGX52.H>
    3          #include "Delay.h"
    4          #include "Timer0.h"
-   5          
-   6          sbit LED = P2^0;
+   5          #include "NixieTube.h"
+   6          #include "IndependentKey.h"
    7          
-   8          void Delay(unsigned int t)
-   9          {
-  10   1              while(t--);
-  11   1      }
+   8          sbit Motor = P1^0;
+   9          
+  10          unsigned char Counter,Compare;
+  11          unsigned char KeyNum,Speed;
   12          
   13          void main()
   14          {
-  15   1              unsigned char Time,i;
-  16   1              while(1)
-  17   1              {
-  18   2                      for(Time=0;Time<100;Time++)
-  19   2                      {
-  20   3                              for(i=0;i<20;i++)       //延缓变化速度
-  21   3                              {
-  22   4                                      LED = 0;
-  23   4                                      Delay(Time);
-  24   4                                      LED = 1;
-  25   4                                      Delay(100-Time);
-  26   4                              }
-  27   3                      }
-  28   2                      for(Time=100;Time>0;Time--)
-  29   2                      {
-  30   3                              for(i=0;i<20;i++)
-  31   3                              {
-  32   4                                      LED = 0;
-  33   4                                      Delay(Time);
-  34   4                                      LED = 1;
-  35   4                                      Delay(100-Time);
-  36   4                              }
-  37   3                      }
-  38   2              }
-  39   1      }
+  15   1              Timer0_Init();
+  16   1              Compare = 5;
+  17   1              while(1)
+  18   1              {
+  19   2                      KeyNum = Key();
+  20   2                      if(KeyNum == 1)
+  21   2                      {
+  22   3                              Speed++;
+  23   3                              Speed%=4;
+  24   3                              if(Speed == 0){Compare = 0;}
+  25   3                              if(Speed == 1){Compare = 50;}
+  26   3                              if(Speed == 2){Compare = 75;}
+  27   3                              if(Speed == 3){Compare = 100;}
+  28   3                      }
+  29   2                      NixieTube_SetBuf(1,Speed);
+  30   2              }
+  31   1      }
+  32          
+  33          void Timer0_Routine() interrupt 1
+  34          {
+  35   1              static unsigned int T0Count1,T0Count2;
+  36   1              TL0 = 0xA4;             //设置定时初值
+  37   1              TH0 = 0xFF;             //设置定时初值
+  38   1              Counter++;
+  39   1              Counter%=100;
+  40   1              if(Counter < Compare)
+  41   1              {
+  42   2                      Motor = 1;
+  43   2              }
+  44   1              else
+  45   1              {
+  46   2                      Motor = 0;
+  47   2              }
+  48   1              T0Count1++;
+  49   1              if(T0Count1 >= 20)
+  50   1              {
+  51   2                      T0Count1=0;
+  52   2                      NixieTube_Loop();
+  53   2              }
+  54   1              T0Count2++;
+C51 COMPILER V9.54   MAIN                                                                  04/03/2025 19:49:26 PAGE 2   
+
+  55   1              if(T0Count2 >= 200)
+  56   1              {
+  57   2                      T0Count2=0;
+  58   2                      Key_Loop();
+  59   2              }
+  60   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     68    ----
+   CODE SIZE        =    202    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =      8    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
