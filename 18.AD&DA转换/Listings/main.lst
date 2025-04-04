@@ -1,0 +1,48 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/04/2025 13:35:39 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil5\keil5C51\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //AD模数转换
+   2          //DA跟PWM原理一致，只是更换了引脚接口且电路内部添加了低通滤波，实际实现代码没有区别。且DA用得少，PWM用得多
+   3          #include <REGX52.H>
+   4          #include "Delay.h"
+   5          #include "LCD1602.h"
+   6          #include "XPT2046.h"
+   7          
+   8          unsigned int ADValue;
+   9          
+  10          void main()
+  11          {
+  12   1              LCD_Init();
+  13   1              LCD_ShowString(1,1,"ADJ NTC RG");
+  14   1              while(1)
+  15   1              {
+  16   2                      ADValue = XPT2046_ReadAD(XPT2046_XP_8);
+  17   2                      LCD_ShowNum(2,1,ADValue*5/256,3);
+  18   2                      ADValue = XPT2046_ReadAD(XPT2046_YP_8);
+  19   2                      LCD_ShowNum(2,5,ADValue*5/256,3);
+  20   2                      ADValue = XPT2046_ReadAD(XPT2046_VBAT_8);
+  21   2                      LCD_ShowNum(2,9,ADValue*5/256,3);
+  22   2                      Delayxms(10);
+  23   2              }
+  24   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    113    ----
+   CONSTANT SIZE    =     11    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
