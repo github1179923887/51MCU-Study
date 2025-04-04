@@ -1,0 +1,73 @@
+C51 COMPILER V9.60.7.0   MOTOR                                                             04/04/2025 21:05:20 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MOTOR
+OBJECT MODULE PLACED IN .\Objects\Motor.obj
+COMPILER INVOKED BY: D:\Keil5\keil5C51\C51\BIN\C51.EXE Motor.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
+                    -ngs\Motor.lst) OBJECT(.\Objects\Motor.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Timer1.h"
+   3          #include "NixieTube.h"
+   4          #include "IndependentKey.h"
+   5          
+   6          sbit Motor = P1^0;
+   7          
+   8          unsigned char Counter,Compare;
+   9          
+  10          void Motor_Init()
+  11          {
+  12   1              Timer1_Init();
+  13   1      }
+  14          
+  15          void Motor_SetSpeed(unsigned char Speed)
+  16          {
+  17   1              Compare = Speed;
+  18   1      }
+  19          
+  20          void Timer1_Routine() interrupt 3
+  21          {
+  22   1              static unsigned int T1Count1,T1Count2;
+  23   1              TL1 = 0xA4;             //设置定时初值
+  24   1              TH1 = 0xFF;             //设置定时初值
+  25   1              Counter++;
+  26   1              Counter%=100;
+  27   1              if(Counter < Compare)
+  28   1              {
+  29   2                      Motor = 1;
+  30   2              }
+  31   1              else
+  32   1              {
+  33   2                      Motor = 0;
+  34   2              }
+  35   1              T1Count1++;
+  36   1              if(T1Count1 >= 20)
+  37   1              {
+  38   2                      T1Count1=0;
+  39   2                      NixieTube_Loop();
+  40   2              }
+  41   1              T1Count2++;
+  42   1              if(T1Count2 >= 200)
+  43   1              {
+  44   2                      T1Count2=0;
+  45   2                      Key_Loop();
+  46   2              }
+  47   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    144    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.7.0   MOTOR                                                             04/04/2025 21:05:20 PAGE 2   
+
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
