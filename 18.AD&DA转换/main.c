@@ -14,11 +14,12 @@ void main()
 	while(1)
 	{
 		ADValue = XPT2046_ReadAD(XPT2046_XP_8);
-		LCD_ShowNum(2,1,ADValue*5/256,3);
+		LCD_ShowNum(2,1,ADValue,3);
 		ADValue = XPT2046_ReadAD(XPT2046_YP_8);
-		LCD_ShowNum(2,5,ADValue*5/256,3);
+		LCD_ShowNum(2,5,ADValue,3);
 		ADValue = XPT2046_ReadAD(XPT2046_VBAT_8);
-		LCD_ShowNum(2,9,ADValue*5/256,3);
+		LCD_ShowNum(2,9,ADValue*5/256,3);	//转化为真实电压值，精度有损失
 		Delayxms(10);
 	}
 }
+

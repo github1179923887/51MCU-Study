@@ -13,6 +13,7 @@ void main()
 	unsigned char Time,i;
 	while(1)
 	{
+		//由暗变亮
 		for(Time=0;Time<100;Time++)
 		{
 			for(i=0;i<20;i++)	//延缓变化速度
@@ -23,6 +24,7 @@ void main()
 				Delay(100-Time);
 			}
 		}
+		//由亮变暗
 		for(Time=100;Time>0;Time--)
 		{
 			for(i=0;i<20;i++)

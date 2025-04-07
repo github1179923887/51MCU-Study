@@ -164,6 +164,6 @@ void Timer0Routine() interrupt 1
 	if(T0Count >= 500)	//每过500ms
 	{
 		T0Count=0;
-		TimeSetFlag =!TimeSetFlag;	//反复去0,1
+		TimeSetFlag =!TimeSetFlag;	//反复取0,1
 	}
 }

@@ -43,7 +43,7 @@ void LCD_WriteData(unsigned char Data)
 
 void LCD_Init()
 {
-	//设置模式
+	//根据指令集设置模式
 	LCD_WriteCommand(0x38);	//八位数据接口，两行显示，5*7点阵
 	LCD_WriteCommand(0x0C);	//显示开，光标关，闪烁关
 	LCD_WriteCommand(0x06);	//数据读写操作后，光标自动加一，画面不变
@@ -52,7 +52,7 @@ void LCD_Init()
 
 void LCD_LC2Location(unsigned char Line,unsigned char Column)
 {
-	//行列到地址的转换
+	//行列到地址的转换，即设置光标位置
 	if(Line == 1)
 	{
 		LCD_WriteCommand(0x80|(Column-1));
@@ -128,7 +128,7 @@ void LCD_ShowHexNum(unsigned char Line,unsigned char Column,unsigned int Number,
 	LCD_LC2Location(Line,Column);
 	for(i=Length;i>0;i--)
 	{
-		SingleNumber = Number/LCD_Pow(16,i-1)%16;
+		SingleNumber = Number/LCD_Pow(16,i-1)%16;	//从后到前一位一位取出
 		if(SingleNumber<10)
 		{
 			LCD_WriteData(SingleNumber + '0');

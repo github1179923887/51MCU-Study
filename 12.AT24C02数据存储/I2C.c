@@ -23,8 +23,8 @@ void I2C_Start()
   */
 void I2C_Stop()
 {
-	//结束条件
 	I2C_SDA = 0;
+	//结束条件
 	I2C_SCL = 1;
 	I2C_SDA = 1;
 }
@@ -52,11 +52,12 @@ void I2C_SendByte(unsigned char Byte)
 unsigned char I2C_ReceiveByte()
 {
 	unsigned char i = 0,Byte = 0x00;
-	I2C_SDA = 1;
+	//若省略，主机无法读取到从机发送的高电平。无论从机是否释放SDA，主机自己都会把线拉低，读到的永远是0
+	I2C_SDA = 1;	
 	for(i=0;i<8;i++)
 	{
 		I2C_SCL = 1;
-		//I2C_SDA在函数内为什么会变？解释：可能是因为从机满足条件时自动向主机发送数据
+		//I2C_SDA在函数内为什么会变？解释：因为从机满足条件时自动改变SDA向主机发送数据
 		if(I2C_SDA){Byte |= (0x80>>i);}
 		I2C_SCL = 0;
 	}
@@ -67,7 +68,7 @@ unsigned char I2C_ReceiveByte()
   * @param	AckBit 应答位（0答，1不答）
   *	@retval	无
   */
-void I2C_SendAck(unsigned char AckBit)	//接收方操作，赋值
+void I2C_SendAck(unsigned char AckBit)	//接收方操作，主机为SDA赋值，表示主机是否应答（接收）
 {
 	I2C_SDA = AckBit;
 	I2C_SCL = 1;
@@ -78,7 +79,7 @@ void I2C_SendAck(unsigned char AckBit)	//接收方操作，赋值
   * @param	无
   *	@retval	AckBit 接收到的应答位（0答，1不答）
   */
-unsigned char I2C_ReceiveAck()	//发送方操作，监测
+unsigned char I2C_ReceiveAck()	//发送方操作，主机监测SDA，判断从机是否应答（接收）
 {
 	unsigned char AckBit = 0;
 	I2C_SDA = 1;

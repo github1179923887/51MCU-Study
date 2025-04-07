@@ -1,7 +1,7 @@
 #ifndef __XPT2046_H__
 #define __XPT2046_H__
 
-//宏定义控制字，设置原理见手册
+//宏定义控制字，设置原理见手册数字接口部分
 //8位
 #define XPT2046_XP_8		0x9C	//滑动变阻器
 #define XPT2046_YP_8		0xDC	//热敏电阻

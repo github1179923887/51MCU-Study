@@ -7,7 +7,7 @@ unsigned char OneWire_Init()
 {
 	unsigned char i,AckBit;
 	
-	EA = 0;	//进入延时时关闭中断
+	EA = 0;	//进入时序时关闭中断系统
 	
 	OneWire_DQ = 1;
 	OneWire_DQ = 0;
@@ -28,7 +28,7 @@ unsigned char OneWire_Init()
 	i = 227;
 	while (--i);
 	
-	EA = 1;	//退出延时时打开中断
+	EA = 1;	//退出时序时打开中断
 	
 	return AckBit;
 }
@@ -37,7 +37,7 @@ void OneWire_SendBit(unsigned char Bit)
 {
 	unsigned char i;
 		
-	EA = 0;	//进入延时时关闭中断
+	EA = 0;	//进入时序时关闭中断
 	
 	OneWire_DQ = 1;		//可不给
 	OneWire_DQ = 0;
@@ -50,10 +50,10 @@ void OneWire_SendBit(unsigned char Bit)
 	//延时50us
 	i = 22;
 	while (--i);
-	//释放总线
+	//正好60us的周期，释放总线
 	OneWire_DQ = 1;
 		
-	EA = 1;	//退出延时时打开中断
+	EA = 1;	//退出时序时打开中断
 	
 }
 
@@ -61,7 +61,7 @@ unsigned char OneWire_ReceiveBit()
 {
 	unsigned char i,Bit;
 		
-	EA = 0;	//进入延时时关闭中断
+	EA = 0;	//进入时序时关闭中断
 	
 	OneWire_DQ = 1;		//可不给
 	OneWire_DQ = 0;
@@ -81,7 +81,7 @@ unsigned char OneWire_ReceiveBit()
 	i = 22;
 	while (--i);
 		
-	EA = 1;	//退出延时时打开中断
+	EA = 1;	//退出时序时打开中断
 	
 	return Bit;
 }

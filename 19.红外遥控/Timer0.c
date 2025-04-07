@@ -20,7 +20,7 @@ unsigned int Timer0_GetCounter()
 {
 	return (TH0<<8)|TL0;
 }
-//根据需要开启关闭计时
+//根据需要开启或关闭计时
 void Timer0_Run(unsigned char Flag)
 {
 	TR0 = Flag;		

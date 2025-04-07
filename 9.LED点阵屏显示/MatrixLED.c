@@ -27,7 +27,8 @@ void MatrixLED_Init()
 void _74HC595_WriteByte(unsigned char Byte)
 {
 	unsigned char i;
-//	SER = Byte&0x80;	//提取Byte的最高位，因为需要先输入最高位然后依次移位，右侧为8位值，左侧为1位值，此时有规则“非0即1”使位对齐
+//	SER = Byte&0x80;	//提取Byte的最高位，因为需要先输入最高位然后依次移位，
+						//右侧为8位值，左侧为1位值，此时有规则“非0即1”使位对齐
 //	SCK = 1;	//移位
 //	SCK = 0;	//清零	
 	for(i = 0;i < 8;i++)

@@ -39,8 +39,8 @@ void DS1302_WriteByte(unsigned char Command,Data)
 	for(i = 0;i < 8;i++)
 	{
 		DS1302_IO = (Data>>i)&0x01;
-		DS1302_SCLK = 1;	//指给上升沿，写
-		DS1302_SCLK = 0;	//指给下降沿，读
+		DS1302_SCLK = 1;	//给上升沿，写
+		DS1302_SCLK = 0;	//置零
 	}
 	DS1302_CE = 0;
 }
@@ -63,7 +63,7 @@ unsigned char DS1302_ReadByte(unsigned char Command)
 	{
 		DS1302_SCLK = 1;
 		DS1302_SCLK = 0;
-		if(DS1302_IO){Data |= (0x01<<i);}	//如果值非0（其实就是1，因为只有0，1两种值），Data第 i 位 置1
+		if(DS1302_IO){Data |= (0x01<<i);}	//如果值非0（其实就是1，因为只有0，1两种值），Data第i位 置1
 	}
 	DS1302_CE = 0;
 	DS1302_IO = 0;
@@ -86,20 +86,13 @@ void DS1302_SetTime()
 void DS1302_ReadTime()
 {
 	unsigned char Temp;
-	Temp = DS1302_ReadByte(DS1302_YEAR) ;
-	DS1302_Time[0] = Temp/16*10+Temp%16;
-	Temp = DS1302_ReadByte(DS1302_MONTH);
-	DS1302_Time[1] = Temp/16*10+Temp%16;
-	Temp = DS1302_ReadByte(DS1302_DATE);
-	DS1302_Time[2] = Temp/16*10+Temp%16;
-	Temp = DS1302_ReadByte(DS1302_HOUR);
-	DS1302_Time[3] = Temp/16*10+Temp%16;
-	Temp = DS1302_ReadByte(DS1302_MINUTE);
-	DS1302_Time[4] = Temp/16*10+Temp%16;
-	Temp = DS1302_ReadByte(DS1302_SECOND);
-	DS1302_Time[5] = Temp/16*10+Temp%16;
-	Temp = DS1302_ReadByte(DS1302_DAY);
-	DS1302_Time[6] = Temp/16*10+Temp%16;
+	Temp = DS1302_ReadByte(DS1302_YEAR);	DS1302_Time[0] = Temp/16*10+Temp%16;
+	Temp = DS1302_ReadByte(DS1302_MONTH);	DS1302_Time[1] = Temp/16*10+Temp%16;
+	Temp = DS1302_ReadByte(DS1302_DATE);	DS1302_Time[2] = Temp/16*10+Temp%16;
+	Temp = DS1302_ReadByte(DS1302_HOUR);	DS1302_Time[3] = Temp/16*10+Temp%16;
+	Temp = DS1302_ReadByte(DS1302_MINUTE);	DS1302_Time[4] = Temp/16*10+Temp%16;
+	Temp = DS1302_ReadByte(DS1302_SECOND);	DS1302_Time[5] = Temp/16*10+Temp%16;
+	Temp = DS1302_ReadByte(DS1302_DAY);		DS1302_Time[6] = Temp/16*10+Temp%16;
 }
 
 //DS1302时钟以BCD码形式表示和存储时间

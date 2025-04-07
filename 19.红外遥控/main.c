@@ -26,7 +26,7 @@ void main()
 	
 	while(1)
 	{
-		if(IR_GetDataFlag() || IR_GetRepeatFlag())
+		if(IR_GetDataFlag() || IR_GetRepeatFlag())	//接收到数据信号或信号正在重复
 		{
 			Address = IR_GetAddress();
 			Command = IR_GetCommand();
